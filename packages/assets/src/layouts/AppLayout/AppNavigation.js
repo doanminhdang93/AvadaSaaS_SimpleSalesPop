@@ -1,11 +1,9 @@
 import React from 'react';
 import {Navigation} from '@shopify/polaris';
 import {useHistory, useLocation} from 'react-router-dom';
-import {ArrowLeftMinor, HomeMajor, SettingsMajor, ShareMinor} from '@shopify/polaris-icons';
+import {HomeMinor, NotificationMajor, SettingsMinor} from '@shopify/polaris-icons';
 import '@assets/styles/layout/navigation.scss';
-import {useStore} from '@assets/reducers/storeReducer';
-import {isEmbeddedApp, prependRoute} from '@assets/config/app';
-import getDomain from '@assets/helpers/getDomain';
+import {prependRoute} from '@assets/config/app';
 import {getUrl} from '@assets/helpers/getUrl';
 
 /**
@@ -15,8 +13,6 @@ import {getUrl} from '@assets/helpers/getUrl';
 export default function AppNavigation() {
   const history = useHistory();
   const {pathname} = useLocation();
-  const {state} = useStore();
-  const {shop} = state;
 
   const isSelected = (route, isExact = true) => {
     if (typeof route === 'undefined') return false;
@@ -52,48 +48,36 @@ export default function AppNavigation() {
 
   return (
     <Navigation location="">
-      {!isEmbeddedApp && (
-        <Navigation.Section
-          items={[
-            {
-              icon: ArrowLeftMinor,
-              label: 'Back to Shopify',
-              onClick: () => window.open(`https://${getDomain(shop)}/admin`)
-            }
-          ]}
-        />
-      )}
       <Navigation.Section
         fill
         separator
         items={[
           {
             url: '/',
-            icon: HomeMajor,
-            label: 'Dashboard',
+            icon: HomeMinor,
+            label: 'Home',
             selected: location.pathname === getUrl('/'),
             onClick: () => {
               history.push('/');
             }
           },
           {
-            url: '/samples',
-            icon: ShareMinor,
-            label: 'Samples',
-            selected: location.pathname === getUrl('/samples'),
+            url: '/notifications',
+            icon: NotificationMajor,
+            label: 'Notifications',
+            selected: location.pathname === getUrl('/notifications'),
             onClick: () => {
-              history.push('/samples');
+              history.push('/notifications');
             }
-          }
-        ].reduce(prepareMenu, [])}
-      />
-      <Navigation.Section
-        separator
-        items={[
+          },
           {
-            label: 'Settings',
             url: '/settings',
-            icon: SettingsMajor
+            icon: SettingsMinor,
+            label: 'Settings',
+            selected: location.pathname === getUrl('/settings'),
+            onClick: () => {
+              history.push('/settings');
+            }
           }
         ].reduce(prepareMenu, [])}
       />

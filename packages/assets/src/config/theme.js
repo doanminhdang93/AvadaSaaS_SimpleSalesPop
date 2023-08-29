@@ -1,8 +1,10 @@
 export const LOGO_BANNER_URL = 'https://cdn1.avada.io/logo/avada_logo_transparent.png';
-export const LOGO_URL =
-  'https://cdn1.avada.io/logo/branding-2022/Logo%20n%E1%BB%81n%20transparent/Brandmark_PhienBanMauChinhTrenNenSang.png';
-export const LOGO_WIDTH = 40;
-const PRIMARY_COLOR = '#1983ff';
+export const LOGO_URL = 'https://i.imgur.com/LTYRxl7.png';
+export const LOGO_WIDTH = 120;
+const PRIMARY_COLOR = '#008060';
+
+export const CLOSE_POPUP_ICON =
+  'https://boostsales.apps.avada.io/76c920a85ebd5fba8dd6568494f8021c.svg';
 
 const theme = {
   colors: {

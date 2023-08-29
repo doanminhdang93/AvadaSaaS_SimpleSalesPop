@@ -1,44 +1,46 @@
 import React from 'react';
-import './NoticationPopup.scss';
+import './NotificationPopup.scss';
+import {CLOSE_POPUP_ICON} from '../../config/theme';
 
 const NotificationPopup = ({
   firstName = 'John Doe',
   city = 'New York',
   country = 'United States',
-  productName = 'Puffer Jacket With Hidden Hood',
+  productName = 'Iphone 15 pro max',
   timestamp = 'a day ago',
-  productImage = 'http://paris.mageplaza.com/images/shop/single/big-1.jpg'
+  productImage = 'https://newphone15.com/wp-content/uploads/2023/04/apple-iphone-15-pro-max-1-500x429.png'
 }) => {
   return (
-    <div className="Avava-SP__Wrapper fadeInUp animated">
-      <div className="Avava-SP__Inner">
-        <div className="Avava-SP__Container">
-          <a href="#" className={'Avava-SP__LinkWrapper'}>
-            <div
-              className="Avava-SP__Image"
-              style={{
-                backgroundImage: `url(${productImage})`
-              }}
-            ></div>
-            <div className="Avada-SP__Content">
-              <div className={'Avada-SP__Title'}>
-                {firstName} in {city}, {country}
-              </div>
-              <div className={'Avada-SP__Subtitle'}>purchased {productName}</div>
-              <div className={'Avada-SP__Footer'}>
-                {timestamp}{' '}
-                <span className="uni-blue">
-                  <i className="fa fa-check" aria-hidden="true" /> by Avada
-                </span>
+    <div className="Avada-SP__Wrapper">
+      <div className="Avada-SP__Inner">
+        <div className="Avada-SP__Container">
+          <img className="Avada-SP__Image" src={productImage} alt="" />
+
+          <div className="Avada-SP__Content">
+            <div>
+              {firstName} in {city}, {country}
+            </div>
+            <div style={{fontWeight: 'bold'}}>{productName}</div>
+            <div className="Avada-SP__Footer">
+              {timestamp}
+              <div>
+                <span className="uni-blue">by Avada</span>
               </div>
             </div>
-          </a>
+          </div>
         </div>
+      </div>
+
+      <div
+        className="Avada-SP__ClosePopup"
+        onClick={() => {
+          alert('test');
+        }}
+      >
+        <img src={CLOSE_POPUP_ICON} alt="" />
       </div>
     </div>
   );
 };
-
-NotificationPopup.propTypes = {};
 
 export default NotificationPopup;

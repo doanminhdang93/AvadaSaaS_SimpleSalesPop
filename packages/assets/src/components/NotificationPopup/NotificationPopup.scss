@@ -1,0 +1,47 @@
+.Avada-SP__Wrapper {
+  width: 350px;
+  position: relative;
+  height: 112px;
+  z-index: 99;
+  color: #333;
+}
+
+.Avada-SP__Wrapper .Avada-SP__Container {
+  display: flex;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-box-shadow: 3px 0 5px rgba(5, 5, 5, 0.07);
+  -moz-box-shadow: 3px 0 5px rgba(5, 5, 5, 0.07);
+  box-shadow: 3px 0 5px rgba(5, 5, 5, 0.07);
+  background: #ffffff;
+  padding: 5px;
+}
+
+.Avada-SP__Wrapper .Avada-SP__Footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.Avada-SP__Footer .uni-blue {
+  font-size: 15px;
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity));
+}
+
+.Avada-SP__Image {
+  margin-right: 20px;
+  max-height: 100px;
+  max-width: 100px;
+  object-fit: cover;
+  border-radius: 1.5rem;
+}
+
+.Avada-SP__ClosePopup {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+}

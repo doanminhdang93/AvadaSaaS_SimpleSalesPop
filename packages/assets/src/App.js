@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import AppBridgeProvider from '@assets/components/AppBridgeProvider';
 import AppLayout from '@assets/layouts/AppLayout';
 import {isEmbeddedApp} from '@assets/config/app';
+import './styles/app.scss';
 
 /**
  * The main endpoint of application contains all routes, settings for redux and Polaris
