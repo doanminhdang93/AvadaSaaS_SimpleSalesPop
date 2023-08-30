@@ -1,5 +1,4 @@
 import {Select, TextField, Stack, TextStyle} from '@shopify/polaris';
-import './TriggerSettings.css';
 import React from 'react';
 
 const TriggersSettings = ({settings, handleChangeSettings}) => {

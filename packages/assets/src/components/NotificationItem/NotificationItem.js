@@ -1,4 +1,4 @@
-import {Stack, ResourceItem} from '@shopify/polaris';
+import {Stack, ResourceItem, TextStyle} from '@shopify/polaris';
 import React from 'react';
 import NotificationPopup from '../NotificationPopup/NotificationPopup';
 
@@ -16,7 +16,7 @@ const NotificationsItem = ({item}) => {
           timestamp={timestamp}
         ></NotificationPopup>
 
-        <p style={{fontWeight: '500'}}>From March 8, 2021</p>
+        <TextStyle variation="strong">From March 8, 2021</TextStyle>
       </Stack>
     </ResourceItem>
   );

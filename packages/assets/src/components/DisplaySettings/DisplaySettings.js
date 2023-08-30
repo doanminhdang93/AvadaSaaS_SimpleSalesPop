@@ -1,13 +1,12 @@
-import {Checkbox, Stack, TextStyle} from '@shopify/polaris';
+import {Checkbox, FormLayout, Stack, TextStyle} from '@shopify/polaris';
 import DesktopPositionInput from '../DesktopPositionInput/DesktopPositionInput';
 import TimeSettings from '../TimeSettings/TimeSettings';
-import defaultSettings from '../../const/defaultSettings';
 import './DisplaySettings.css';
 import React from 'react';
 
 const DisplaySettings = ({settings, handleChangeSettings}) => {
   return (
-    <Stack vertical>
+    <FormLayout>
       <TextStyle variation="strong">APPEARANCE</TextStyle>
       <DesktopPositionInput
         value={settings.position}
@@ -29,7 +28,7 @@ const DisplaySettings = ({settings, handleChangeSettings}) => {
       <TextStyle variation="strong">TIMING</TextStyle>
 
       <TimeSettings settings={settings} handleChangeSettings={handleChangeSettings}></TimeSettings>
-    </Stack>
+    </FormLayout>
   );
 };
 
