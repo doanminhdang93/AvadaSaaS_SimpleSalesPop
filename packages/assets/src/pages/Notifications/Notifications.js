@@ -1,4 +1,4 @@
-import {Card, Layout, Page, Pagination, ResourceList, Stack} from '@shopify/polaris';
+import {Card, Layout, Page, Pagination, ResourceItem, ResourceList, Stack} from '@shopify/polaris';
 import React, {useState} from 'react';
 import NotificationsItem from '../../components/NotificationItem/NotificationItem';
 
@@ -45,8 +45,6 @@ const Notifications = () => {
 
   return (
     <Page fullWidth title="Notifications" subtitle="List of sales notification from Shopify">
-      <br />
-      <br />
       <Layout>
         <Layout.Section>
           <Card>
@@ -57,7 +55,15 @@ const Notifications = () => {
               selectedItems={selectedItems}
               onSelectionChange={setSelectedItems}
               sortValue={sortValue}
-              renderItem={item => <NotificationsItem item={item} />}
+              renderItem={item => (
+                <ResourceItem
+                  id={item.id}
+                  accessibilityLabel={`View details for ${item.productName}`}
+                  persistActions
+                >
+                  <NotificationsItem item={item} />
+                </ResourceItem>
+              )}
               promotedBulkActions={[
                 {
                   content: 'Delete'

@@ -30,11 +30,12 @@ export default function useEditApi({
    * @returns {Promise<boolean>}
    */
   const handleEdit = async (data, newEditing = true) => {
+    // console.log(data);
     try {
       setEditing(prev =>
         typeof newEditing === 'boolean' ? newEditing : {...prev, [newEditing]: true}
       );
-      const resp = await api(url, {body: {data}, method: 'PUT'});
+      const resp = await api(url, {method: 'PUT', body: data});
       if (resp.success && useToast) {
         setToast(dispatch, resp.message || successMsg);
       }

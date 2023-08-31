@@ -6,19 +6,17 @@ const NotificationsItem = ({item}) => {
   const {id, firstName, city, country, productName, timestamp, productImage} = item;
   //   console.log(item);
   return (
-    <ResourceItem id={id} accessibilityLabel={`View details for ${productName}`} persistActions>
-      <Stack distribution="equalSpacing">
-        <NotificationPopup
-          firstName={firstName}
-          productImage={productImage}
-          city={city}
-          country={country}
-          timestamp={timestamp}
-        ></NotificationPopup>
+    <Stack distribution="equalSpacing">
+      <NotificationPopup
+        firstName={firstName}
+        productImage={productImage}
+        city={city}
+        country={country}
+        timestamp={timestamp}
+      ></NotificationPopup>
 
-        <TextStyle variation="strong">From March 8, 2021</TextStyle>
-      </Stack>
-    </ResourceItem>
+      <TextStyle variation="strong">From March 8, 2021</TextStyle>
+    </Stack>
   );
 };
 

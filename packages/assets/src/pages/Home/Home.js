@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Layout, Page, SettingToggle, TextStyle} from '@shopify/polaris';
-import {useStore} from '@assets/reducers/storeReducer';
+import {api} from '../../helpers';
 
 /**
  * Render a home page for overview
@@ -10,7 +10,28 @@ import {useStore} from '@assets/reducers/storeReducer';
  */
 export default function Home() {
   const [enabled, setEnabled] = useState(false);
-  const {dispatch} = useStore();
+  // const options = {
+  //   method: 'POST',
+  //   body: {
+  //     displayDuration: 55,
+  //     includedUrls: '',
+  //     maxPopsDisplay: 20,
+  //     firstDelay: 35,
+  //     truncateProductName: false,
+  //     excludedUrls: '',
+  //     allowShow: 'specific',
+  //     position: 'bottom-left',
+  //     hideTimeAgo: true,
+  //     popsInterval: 30
+  //   }
+  // };
+  // async function callApi() {
+  //   await api('/settings', options);
+  //   // console.log(data);
+  // }
+  // useEffect(() => {
+  //   callApi();
+  // }, []);
 
   return (
     <Page fullWidth title="Home">
@@ -27,7 +48,7 @@ export default function Home() {
           >
             <TextStyle>
               App status is{' '}
-              <span style={{fontWeight: 'bold'}}>{enabled ? 'enabled' : 'disabled'}</span>
+              <TextStyle variation="strong">{enabled ? 'enabled' : 'disabled'}</TextStyle>
             </TextStyle>
           </SettingToggle>
         </Layout.Section>

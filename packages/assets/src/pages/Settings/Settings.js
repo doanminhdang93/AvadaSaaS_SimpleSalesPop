@@ -1,29 +1,44 @@
 import React, {useState} from 'react';
-import {Card, Tabs, Page, Layout} from '@shopify/polaris';
+import {Card, Tabs, Page, Layout, Loading, Toast} from '@shopify/polaris';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import DisplaySettings from '../../components/DisplaySettings/DisplaySettings';
 import TriggersSettings from '../../components/TriggerSettings/TriggersSettings';
 import defaultSettings from '../../const/defaultSettings';
 import '../../styles/components/settings.css';
+import useFetchApi from '../../hooks/api/useFetchApi';
+import useEditApi from '../../hooks/api/useEditApi';
+import {useStore} from '@assets/reducers/storeReducer';
+import {closeToast} from '@assets/actions/storeActions';
 
 const Settings = () => {
-  const [settings, setSettings] = useState(defaultSettings);
   const [selectedTab, setSelectedTab] = useState(0);
+  const {state, dispatch} = useStore();
+  const {toast} = state;
 
-  const handleChangeSettings = (key, value) => {
-    setSettings(prev => ({
-      ...prev,
+  const {data: input, setData: setInput, loading} = useFetchApi({
+    url: '/settings',
+    defaultData: defaultSettings
+  });
+
+  const {editing, handleEdit} = useEditApi({url: '/settings'});
+
+  const handleInputChange = (key, value) => {
+    setInput(prevInput => ({
+      ...prevInput,
       [key]: value
     }));
   };
-  const handleSave = () => {
-    console.log(settings);
+
+  const handleSave = async () => {
+    await handleEdit(input);
   };
+
   const primaryAction = {
     content: 'Save',
     onAction: () => {
       handleSave();
-    }
+    },
+    loading: editing
   };
 
   const handleTabChange = selectedTabIndex => {
@@ -33,39 +48,41 @@ const Settings = () => {
     {
       id: 'display-settings',
       content: 'Display',
-      bodyContent: (
-        <DisplaySettings settings={settings} handleChangeSettings={handleChangeSettings} />
-      )
+      bodyContent: <DisplaySettings settings={input} handleChangeSettings={handleInputChange} />
     },
     {
       id: 'triggers-settings',
       content: 'Triggers',
-      bodyContent: (
-        <TriggersSettings settings={settings} handleChangeSettings={handleChangeSettings} />
-      )
+      bodyContent: <TriggersSettings settings={input} handleChangeSettings={handleInputChange} />
     }
   ];
   return (
-    <Page
-      fullWidth
-      title="Settings"
-      subtitle="Decide how your notifications will display"
-      primaryAction={primaryAction}
-    >
-      <br />
-      <Layout>
-        <Layout.Section oneThird>
-          <NotificationPopup />
-        </Layout.Section>
-        <Layout.Section>
-          <Card>
-            <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
-              <Card.Section>{tabs[selectedTab].bodyContent}</Card.Section>
-            </Tabs>
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </Page>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Page
+          fullWidth
+          title="Settings"
+          subtitle="Decide how your notifications will display"
+          primaryAction={primaryAction}
+        >
+          <Layout>
+            <Layout.Section secondary>
+              <NotificationPopup />
+            </Layout.Section>
+            <Layout.Section>
+              <Card>
+                <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
+                  <Card.Section>{tabs[selectedTab].bodyContent}</Card.Section>
+                </Tabs>
+              </Card>
+            </Layout.Section>
+          </Layout>
+          {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
+        </Page>
+      )}
+    </>
   );
 };
 

@@ -1,13 +1,14 @@
-import {Select, TextField, Stack, TextStyle} from '@shopify/polaris';
+import {Select, TextField, TextStyle, FormLayout} from '@shopify/polaris';
 import React from 'react';
+import defaultSettings from '../../const/defaultSettings';
 
-const TriggersSettings = ({settings, handleChangeSettings}) => {
+const TriggersSettings = ({settings = defaultSettings, handleChangeSettings}) => {
   const options = [
     {label: 'All pages', value: 'all'},
     {label: 'Specific pages', value: 'specific'}
   ];
   return (
-    <Stack vertical>
+    <FormLayout>
       <TextStyle variation="strong">PAGES RESTRICTION</TextStyle>
 
       <Select
@@ -35,7 +36,7 @@ const TriggersSettings = ({settings, handleChangeSettings}) => {
         autoComplete="off"
         helpText="Page URLs NOT to show the pop-up (separated by new lines)"
       ></TextField>
-    </Stack>
+    </FormLayout>
   );
 };
 
