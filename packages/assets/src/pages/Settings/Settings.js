@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, Tabs, Page, Layout, Loading, Toast} from '@shopify/polaris';
+import {Card, Tabs, Page, Layout, Loading} from '@shopify/polaris';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import DisplaySettings from '../../components/DisplaySettings/DisplaySettings';
 import TriggersSettings from '../../components/TriggerSettings/TriggersSettings';
@@ -7,13 +7,9 @@ import defaultSettings from '../../const/defaultSettings';
 import '../../styles/components/settings.css';
 import useFetchApi from '../../hooks/api/useFetchApi';
 import useEditApi from '../../hooks/api/useEditApi';
-import {useStore} from '@assets/reducers/storeReducer';
-import {closeToast} from '@assets/actions/storeActions';
 
 const Settings = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const {state, dispatch} = useStore();
-  const {toast} = state;
 
   const {data: input, setData: setInput, loading} = useFetchApi({
     url: '/settings',
@@ -79,7 +75,6 @@ const Settings = () => {
               </Card>
             </Layout.Section>
           </Layout>
-          {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
         </Page>
       )}
     </>

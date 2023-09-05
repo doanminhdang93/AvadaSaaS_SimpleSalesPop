@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Frame, Loading, Scrollable, Toast} from '@shopify/polaris';
 import PropTypes from 'prop-types';
+import {useStore} from '@assets/reducers/storeReducer';
+import {closeToast} from '@assets/actions/storeActions';
 import AppTopBar from '@assets/layouts/AppLayout/AppTopBar';
 import AppNavigation from '@assets/layouts/AppLayout/AppNavigation';
 import {isEmbeddedApp} from '@assets/config/app';
@@ -12,6 +14,8 @@ import {isEmbeddedApp} from '@assets/config/app';
  * @constructor
  */
 export default function AppLayout({children}) {
+  const {state, dispatch} = useStore();
+  const {loading, toast} = state;
   const [isNavOpen, setIsNavOpen] = useState(!isEmbeddedApp);
   const toggleOpenNav = () => setIsNavOpen(prev => !prev);
   const navigationClass = [
@@ -31,6 +35,8 @@ export default function AppLayout({children}) {
         </div>
         <Scrollable className={contentClass.join(' ')}>{children}</Scrollable>
       </div>
+      {loading && <Loading />}
+      {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
     </Frame>
   );
 }

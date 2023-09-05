@@ -47,6 +47,10 @@ export async function updateSetting(shopId, updatedData) {
     .limit(1)
     .get();
 
+  if (settingDocs.empty) {
+    return null;
+  }
+
   const settingDoc = settingDocs.docs[0];
   await settingRef.doc(settingDoc.id).update(updatedData);
 }
