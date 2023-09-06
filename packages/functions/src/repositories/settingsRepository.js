@@ -36,8 +36,8 @@ export async function getSetting(shopId) {
   const settingDoc = settingDocs.docs[0];
 
   return {
-    id: settingDoc.id,
-    ...settingDoc.data()
+    ...settingDoc.data(),
+    id: settingDoc.id
   };
 }
 
@@ -48,7 +48,7 @@ export async function updateSetting(shopId, updatedData) {
     .get();
 
   if (settingDocs.empty) {
-    return null;
+    return;
   }
 
   const settingDoc = settingDocs.docs[0];

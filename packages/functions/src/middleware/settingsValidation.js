@@ -1,4 +1,4 @@
-const {object, string, number, boolean} = require('yup');
+import {object, string, number, boolean} from 'yup';
 
 const settingsValidation = async (ctx, next) => {
   try {
@@ -13,12 +13,12 @@ const settingsValidation = async (ctx, next) => {
       maxPopsDisplay: number().positive(),
       includedUrls: string(),
       excludedUrls: string(),
-      allowShow: string(),
-      shopId: string()
+      allowShow: string()
     });
     await schema.validate(data);
     await next();
   } catch (error) {
+    // console.log(error);
     ctx.status = 400;
     ctx.body = {
       success: false,
@@ -27,6 +27,4 @@ const settingsValidation = async (ctx, next) => {
   }
 };
 
-module.exports = {
-  settingsValidation
-};
+export default settingsValidation;

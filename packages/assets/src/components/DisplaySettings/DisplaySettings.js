@@ -7,7 +7,6 @@ import defaultSettings from '../../const/defaultSettings';
 const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => {
   const onTyping = (key, val, max) => {
     let valToNumber = +val;
-    // if (val?.trim() === '') valToNumber = 0;
     if (valToNumber < 0) return;
     if (Number.isNaN(valToNumber)) return;
     if (valToNumber > max) valToNumber = max;
@@ -52,6 +51,58 @@ const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => 
       suffix: 'pop(s)'
     }
   ];
+
+  const groupsRangeSlider = rangeSliderSettings.map((item, index) => {
+    if (index % 2 === 0) {
+      const nextItem = rangeSliderSettings[index + 1];
+      return (
+        <FormLayout.Group key={index}>
+          <RangeSlider
+            output
+            label={item.label}
+            min={item.minValue}
+            max={item.maxValue}
+            value={item.value}
+            onChange={val => handleChangeSettings(item.key, val)}
+            helpText={item.helpText}
+            suffix={
+              <div style={{width: '112px'}}>
+                <TextField
+                  value={`${item.value}`}
+                  autoComplete="off"
+                  suffix={item.suffix}
+                  onChange={val => onTyping(item.key, val, item.maxValue)}
+                ></TextField>
+              </div>
+            }
+          />
+          {nextItem && (
+            <RangeSlider
+              output
+              label={nextItem.label}
+              min={nextItem.minValue}
+              max={nextItem.maxValue}
+              value={nextItem.value}
+              onChange={val => handleChangeSettings(nextItem.key, val)}
+              helpText={nextItem.helpText}
+              suffix={
+                <div style={{width: '112px'}}>
+                  <TextField
+                    value={`${nextItem.value}`}
+                    autoComplete="off"
+                    suffix={nextItem.suffix}
+                    onChange={val => onTyping(nextItem.key, val, nextItem.maxValue)}
+                  ></TextField>
+                </div>
+              }
+            />
+          )}
+        </FormLayout.Group>
+      );
+    }
+    return null;
+  });
+
   return (
     <FormLayout>
       <TextStyle variation="strong">APPEARANCE</TextStyle>
@@ -71,30 +122,7 @@ const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => 
 
       <TextStyle variation="strong">TIMING</TextStyle>
 
-      <FormLayout.Group>
-        {rangeSliderSettings.map((item, index) => (
-          <RangeSlider
-            key={index}
-            output
-            label={item.label}
-            min={item.minValue}
-            max={item.maxValue}
-            value={item.value}
-            onChange={val => handleChangeSettings(item.key, val)}
-            helpText={item.helpText}
-            suffix={
-              <div style={{width: '112px'}}>
-                <TextField
-                  value={`${item.value}`}
-                  autoComplete="off"
-                  suffix={`${item.suffix}`}
-                  onChange={val => onTyping(item.key, val, item.maxValue)}
-                ></TextField>
-              </div>
-            }
-          ></RangeSlider>
-        ))}
-      </FormLayout.Group>
+      {groupsRangeSlider}
     </FormLayout>
   );
 };

@@ -65,7 +65,7 @@ const Settings = () => {
         >
           <Layout>
             <Layout.Section secondary>
-              <NotificationPopup />
+              <NotificationPopup settings={input} />
             </Layout.Section>
             <Layout.Section>
               <Card>

@@ -1,47 +1,20 @@
 import {Card, Layout, Page, Pagination, ResourceItem, ResourceList, Stack} from '@shopify/polaris';
 import React, {useState} from 'react';
 import NotificationsItem from '../../components/NotificationItem/NotificationItem';
+import useFetchApi from '../../hooks/api/useFetchApi';
 
 const Notifications = () => {
   const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
   const [selectedItems, setSelectedItems] = useState([]);
 
+  const {data: notifications, setData, loading} = useFetchApi({
+    url: '/notifications'
+  });
+
   const resourceName = {
     singular: 'notification',
     plural: 'notifications'
   };
-  const items = [
-    {
-      id: 1,
-      firstName: 'John Doe',
-      city: 'New York',
-      country: 'United States',
-      productName: 'Iphone 15 pro max',
-      timestamp: 'a day ago',
-      productImage:
-        'https://newphone15.com/wp-content/uploads/2023/04/apple-iphone-15-pro-max-1-500x429.png'
-    },
-    {
-      id: 2,
-      firstName: 'John Doe',
-      city: 'New York',
-      country: 'United States',
-      productName: 'Iphone 15 pro max',
-      timestamp: 'a day ago',
-      productImage:
-        'https://newphone15.com/wp-content/uploads/2023/04/apple-iphone-15-pro-max-1-500x429.png'
-    },
-    {
-      id: 3,
-      firstName: 'John Doe',
-      city: 'New York',
-      country: 'United States',
-      productName: 'Iphone 15 pro max',
-      timestamp: 'a day ago',
-      productImage:
-        'https://newphone15.com/wp-content/uploads/2023/04/apple-iphone-15-pro-max-1-500x429.png'
-    }
-  ];
 
   return (
     <Page fullWidth title="Notifications" subtitle="List of sales notification from Shopify">
@@ -49,8 +22,9 @@ const Notifications = () => {
         <Layout.Section>
           <Card>
             <ResourceList
+              loading={loading}
               resourceName={resourceName}
-              items={items}
+              items={notifications}
               selectable
               selectedItems={selectedItems}
               onSelectionChange={setSelectedItems}

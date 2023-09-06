@@ -1,4 +1,4 @@
-import {Labelled, Stack} from '@shopify/polaris';
+import {Labelled, Stack, TextStyle} from '@shopify/polaris';
 import './desktopPositionInput.css';
 import React from 'react';
 
@@ -12,7 +12,7 @@ const defaultOptions = [
 const DesktopPositionInput = ({label, value, onChange, options = defaultOptions}) => {
   return (
     <>
-      <p style={{marginBottom: '5px'}}>Desktop Position</p>
+      <TextStyle>Desktop Position</TextStyle>
       <Labelled label={label} helpText="The display position of the pop on your website">
         <Stack>
           {options.map((option, key) => (

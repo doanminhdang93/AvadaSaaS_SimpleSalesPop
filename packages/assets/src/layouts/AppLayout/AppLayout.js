@@ -15,7 +15,7 @@ import {isEmbeddedApp} from '@assets/config/app';
  */
 export default function AppLayout({children}) {
   const {state, dispatch} = useStore();
-  const {loading, toast} = state;
+  const {toast} = state;
   const [isNavOpen, setIsNavOpen] = useState(!isEmbeddedApp);
   const toggleOpenNav = () => setIsNavOpen(prev => !prev);
   const navigationClass = [
@@ -35,7 +35,7 @@ export default function AppLayout({children}) {
         </div>
         <Scrollable className={contentClass.join(' ')}>{children}</Scrollable>
       </div>
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
       {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
     </Frame>
   );

@@ -1,12 +1,13 @@
 import App from 'koa';
 import 'isomorphic-fetch';
-import {contentSecurityPolicy, shopifyAuth} from '@avada/shopify-auth';
+import {contentSecurityPolicy, getShopByShopifyDomain, shopifyAuth} from '@avada/shopify-auth';
 import shopifyConfig from '@functions/config/shopify';
 import render from 'koa-ejs';
 import path from 'path';
 import createErrorHandler from '@functions/middleware/errorHandler';
 import firebase from 'firebase-admin';
 import appConfig from '@functions/config/app';
+import {afterInstallService} from '../services/installationService';
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp();
@@ -43,6 +44,7 @@ app.use(
     },
     hostName: appConfig.baseUrl,
     isEmbeddedApp: true,
+    afterInstall: afterInstallService,
     afterThemePublish: ctx => {
       // Publish assets when theme is published or changed here
       return (ctx.body = {
