@@ -15,8 +15,8 @@ const notificationsRef = firestore.collection('notifications');
  * @param {string} id
  * @returns {Object}
  */
-export async function getNotifications({shopId, page = 1, limit = 3, sort = 'desc'}) {
-  const baseQuery = await notificationsRef.where('shopId', '==', shopId);
+export async function getNotifications({shopId, page = 1, limit = 5, sort = 'desc'}) {
+  const baseQuery = notificationsRef.where('shopId', '==', shopId);
 
   const countRef = baseQuery.get();
 

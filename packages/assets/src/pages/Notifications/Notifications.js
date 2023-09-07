@@ -12,7 +12,6 @@ const Notifications = () => {
     url: '/notifications',
     initQueries: {
       page: currentPage,
-      limit: 3,
       sort: sortValue
     }
   });
@@ -24,13 +23,13 @@ const Notifications = () => {
 
   const handleSortChange = async selected => {
     setSortValue(selected);
-    await fetchApi('/notifications', {page: 1, limit: 3, sort: selected});
+    await fetchApi('/notifications', {page: 1, sort: selected});
     setCurrentPage(1);
   };
 
   const handlePageChange = async newPage => {
     setCurrentPage(newPage);
-    await fetchApi('/notifications', {page: newPage, limit: 3, sort: sortValue});
+    await fetchApi('/notifications', {page: newPage, sort: sortValue});
   };
 
   return (
@@ -75,7 +74,7 @@ const Notifications = () => {
             <Pagination
               hasPrevious={currentPage > 1}
               onPrevious={() => handlePageChange(currentPage - 1)}
-              hasNext={currentPage < Math.ceil(count / 3)}
+              hasNext={currentPage < Math.ceil(count / pageInfo.limit)}
               onNext={() => handlePageChange(currentPage + 1)}
             />
           </Stack>
