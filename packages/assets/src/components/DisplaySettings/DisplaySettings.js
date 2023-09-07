@@ -1,10 +1,10 @@
-import {Checkbox, FormLayout, RangeSlider, TextField, TextStyle} from '@shopify/polaris';
+import {Card, Checkbox, FormLayout, RangeSlider, TextField} from '@shopify/polaris';
 import DesktopPositionInput from '../DesktopPositionInput/DesktopPositionInput';
 import './DisplaySettings.css';
 import React from 'react';
 import defaultSettings from '../../const/defaultSettings';
 
-const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => {
+const DisplaySettings = ({handleChangeSettings, settings = defaultSettings}) => {
   const onTyping = (key, val, max) => {
     let valToNumber = +val;
     if (valToNumber < 0) return;
@@ -66,7 +66,7 @@ const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => 
             onChange={val => handleChangeSettings(item.key, val)}
             helpText={item.helpText}
             suffix={
-              <div style={{width: '112px'}}>
+              <div className="Avada-RangeSlider__Suffix">
                 <TextField
                   value={`${item.value}`}
                   autoComplete="off"
@@ -86,7 +86,7 @@ const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => 
               onChange={val => handleChangeSettings(nextItem.key, val)}
               helpText={nextItem.helpText}
               suffix={
-                <div style={{width: '112px'}}>
+                <div className="Avada-RangeSlider__Suffix">
                   <TextField
                     value={`${nextItem.value}`}
                     autoComplete="off"
@@ -104,26 +104,30 @@ const DisplaySettings = ({settings = defaultSettings, handleChangeSettings}) => 
   });
 
   return (
-    <FormLayout>
-      <TextStyle variation="strong">APPEARANCE</TextStyle>
-      <DesktopPositionInput value={settings.position} onChange={handleChangeSettings} />
+    <>
+      <Card.Section title={`appearance`}>
+        <FormLayout>
+          <DesktopPositionInput value={settings.position} onChange={handleChangeSettings} />
 
-      <Checkbox
-        label="Hide time ago"
-        checked={settings.hideTimeAgo}
-        onChange={() => handleChangeSettings('hideTimeAgo', !settings.hideTimeAgo)}
-      />
-      <Checkbox
-        label="Truncate content text"
-        checked={settings.truncateProductName}
-        onChange={() => handleChangeSettings('truncateProductName', !settings.truncateProductName)}
-        helpText="If your product name is long for one line, it will be truncated to 'Product na...'"
-      />
-
-      <TextStyle variation="strong">TIMING</TextStyle>
-
-      {groupsRangeSlider}
-    </FormLayout>
+          <Checkbox
+            label="Hide time ago"
+            checked={settings.hideTimeAgo}
+            onChange={() => handleChangeSettings('hideTimeAgo', !settings.hideTimeAgo)}
+          />
+          <Checkbox
+            label="Truncate content text"
+            checked={settings.truncateProductName}
+            onChange={() =>
+              handleChangeSettings('truncateProductName', !settings.truncateProductName)
+            }
+            helpText="If your product name is long for one line, it will be truncated to 'Product na...'"
+          />
+        </FormLayout>
+      </Card.Section>
+      <Card.Section title={`timming`}>
+        <FormLayout>{groupsRangeSlider}</FormLayout>
+      </Card.Section>
+    </>
   );
 };
 

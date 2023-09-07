@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, Tabs, Page, Layout, Loading} from '@shopify/polaris';
+import {Card, Tabs, Page, Layout} from '@shopify/polaris';
 import NotificationPopup from '../../components/NotificationPopup/NotificationPopup';
 import DisplaySettings from '../../components/DisplaySettings/DisplaySettings';
 import TriggersSettings from '../../components/TriggerSettings/TriggersSettings';
@@ -7,9 +7,14 @@ import defaultSettings from '../../const/defaultSettings';
 import '../../styles/components/settings.css';
 import useFetchApi from '../../hooks/api/useFetchApi';
 import useEditApi from '../../hooks/api/useEditApi';
+import SkeletonSettings from '../../loadables/Settings/SkeletonSettings';
 
 const Settings = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleTabChange = selectedTabIndex => {
+    setSelectedTab(selectedTabIndex);
+  };
 
   const {data: input, setData: setInput, loading} = useFetchApi({
     url: '/settings',
@@ -37,9 +42,6 @@ const Settings = () => {
     loading: editing
   };
 
-  const handleTabChange = selectedTabIndex => {
-    setSelectedTab(selectedTabIndex);
-  };
   const tabs = [
     {
       id: 'display-settings',
@@ -52,32 +54,30 @@ const Settings = () => {
       bodyContent: <TriggersSettings settings={input} handleChangeSettings={handleInputChange} />
     }
   ];
+
   return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Page
-          fullWidth
-          title="Settings"
-          subtitle="Decide how your notifications will display"
-          primaryAction={primaryAction}
-        >
-          <Layout>
-            <Layout.Section secondary>
-              <NotificationPopup settings={input} />
-            </Layout.Section>
-            <Layout.Section>
-              <Card>
-                <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
-                  <Card.Section>{tabs[selectedTab].bodyContent}</Card.Section>
-                </Tabs>
-              </Card>
-            </Layout.Section>
-          </Layout>
-        </Page>
+    <Page
+      fullWidth
+      title="Settings"
+      subtitle="Decide how your notifications will display"
+      primaryAction={primaryAction}
+    >
+      {loading && <SkeletonSettings />}
+      {!loading && (
+        <Layout>
+          <Layout.Section secondary>
+            <NotificationPopup settings={input} />
+          </Layout.Section>
+          <Layout.Section>
+            <Card>
+              <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
+                {tabs[selectedTab].bodyContent}
+              </Tabs>
+            </Card>
+          </Layout.Section>
+        </Layout>
       )}
-    </>
+    </Page>
   );
 };
 

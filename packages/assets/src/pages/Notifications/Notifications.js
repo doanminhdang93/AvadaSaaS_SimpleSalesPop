@@ -4,16 +4,33 @@ import NotificationsItem from '../../components/NotificationItem/NotificationIte
 import useFetchApi from '../../hooks/api/useFetchApi';
 
 const Notifications = () => {
-  const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
+  const [sortValue, setSortValue] = useState('desc');
   const [selectedItems, setSelectedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const {data: notifications, setData, loading} = useFetchApi({
-    url: '/notifications'
+  const {data: notifications, loading, pageInfo, count, fetchApi} = useFetchApi({
+    url: '/notifications',
+    initQueries: {
+      page: currentPage,
+      limit: 3,
+      sort: sortValue
+    }
   });
 
   const resourceName = {
     singular: 'notification',
     plural: 'notifications'
+  };
+
+  const handleSortChange = async selected => {
+    setSortValue(selected);
+    await fetchApi('/notifications', {page: 1, limit: 3, sort: selected});
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = async newPage => {
+    setCurrentPage(newPage);
+    await fetchApi('/notifications', {page: newPage, limit: 3, sort: sortValue});
   };
 
   return (
@@ -44,12 +61,11 @@ const Notifications = () => {
                 }
               ]}
               sortOptions={[
-                {label: 'Newest update', value: 'DATE_MODIFIED_DESC'},
-                {label: 'Oldest update', value: 'DATE_MODIFIED_ASC'}
+                {label: 'Newest update', value: 'desc'},
+                {label: 'Oldest update', value: 'asc'}
               ]}
               onSortChange={selected => {
-                setSortValue(selected);
-                // console.log(`Sort option changed to ${selected}.`);
+                handleSortChange(selected);
               }}
             ></ResourceList>
           </Card>
@@ -57,14 +73,10 @@ const Notifications = () => {
         <Layout.Section>
           <Stack distribution="center">
             <Pagination
-              hasPrevious
-              onPrevious={() => {
-                //   console.log("Previous");
-              }}
-              hasNext
-              onNext={() => {
-                //   console.log("Next");
-              }}
+              hasPrevious={currentPage > 1}
+              onPrevious={() => handlePageChange(currentPage - 1)}
+              hasNext={currentPage < Math.ceil(count / 3)}
+              onNext={() => handlePageChange(currentPage + 1)}
             />
           </Stack>
         </Layout.Section>

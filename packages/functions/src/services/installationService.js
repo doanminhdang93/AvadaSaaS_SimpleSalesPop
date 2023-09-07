@@ -1,6 +1,7 @@
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {syncNotifications} from '../repositories/notificationsRepository';
 import {addNewSetting} from '../repositories/settingsRepository';
+import defaultSettings from '../const/defaultSettings';
 
 export async function afterInstallService(ctx) {
   try {

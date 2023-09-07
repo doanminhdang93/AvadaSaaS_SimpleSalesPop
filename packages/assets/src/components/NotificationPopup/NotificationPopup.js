@@ -20,10 +20,10 @@ const NotificationPopup = ({
           <img className="Avada-SP__Image" src={productImage} alt="" />
 
           <div className="Avada-SP__Content">
-            <div>
+            <div className="Avada-SP__Title">
               {firstName} in {city}, {country}
             </div>
-            <div style={{fontWeight: 'bold'}}>
+            <div className="Avada-SP__Subtitle">
               Purchased{' '}
               {truncateProductName && productName.length > 15
                 ? productName.slice(0, 15) + '...'

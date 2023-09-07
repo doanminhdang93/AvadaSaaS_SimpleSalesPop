@@ -30,10 +30,13 @@ export async function handleSyncNotifications(ctx) {
 export async function handleGetNotifications(ctx) {
   try {
     const shopId = getCurrentShop(ctx);
-    const notifications = await getNotifications(shopId);
+    const {page, limit, sort} = ctx.query;
+    const {count, pageInfo, notifications} = await getNotifications({shopId, page, limit, sort});
 
     ctx.status = 200;
     return (ctx.body = {
+      count: count,
+      pageInfo: pageInfo,
       data: notifications,
       success: true
     });

@@ -14,7 +14,6 @@ const settingRef = firestore.collection('settings');
  * @param {string} id
  * @returns {Object}
  */
-
 export async function addNewSetting(shopId, data) {
   const setting = await getSetting(shopId);
   if (!setting) {
