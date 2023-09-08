@@ -11,7 +11,9 @@ const firestore = new Firestore();
 const settingRef = firestore.collection('settings');
 
 /**
- * @param {string} id
+ * @param {string} shopId
+ * @param {Object} data
+ * @param {Object} updatedData
  * @returns {Object}
  */
 export async function addNewSetting(shopId, data) {
