@@ -1,4 +1,4 @@
-import {getNotifications, syncNotifications} from '../repositories/notificationsRepository';
+import {getNotifications} from '../repositories/notificationsRepository';
 import {getCurrentShop} from '../helpers/auth';
 
 export async function handleGetNotifications(ctx) {
@@ -7,7 +7,6 @@ export async function handleGetNotifications(ctx) {
     const {page, limit, sort} = ctx.query;
     const {count, pageInfo, notifications} = await getNotifications({shopId, page, limit, sort});
 
-    ctx.status = 200;
     return (ctx.body = {
       count: count,
       pageInfo: pageInfo,

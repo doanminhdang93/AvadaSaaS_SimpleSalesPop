@@ -2,6 +2,7 @@ import {getShopByShopifyDomain} from '@avada/shopify-auth';
 import {syncNotifications} from '../repositories/notificationsRepository';
 import {addNewSetting} from '../repositories/settingsRepository';
 import defaultSettings from '../const/defaultSettings';
+import {registerWebhook} from './shopifyServices';
 
 export async function afterInstallService(ctx) {
   try {
@@ -16,6 +17,11 @@ export async function afterInstallService(ctx) {
       syncNotifications({
         shopifyDomain,
         shopId: shop.id,
+        accessToken: shop.accessToken
+      }),
+
+      registerWebhook({
+        shopifyDomain,
         accessToken: shop.accessToken
       })
     ]);

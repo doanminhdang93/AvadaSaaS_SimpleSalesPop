@@ -7,7 +7,7 @@ const NotificationPopup = ({
   firstName = 'John Doe',
   city = 'New York',
   country = 'United States',
-  productName = 'Iphone 15 pro max',
+  productName = 'Iphone 15 pro max 256GB',
   timestamp = `${new Date()}`,
   productImage = 'https://newphone15.com/wp-content/uploads/2023/04/apple-iphone-15-pro-max-1-500x429.png',
   settings = {hideTimeAgo: false, truncateProductName: false}
@@ -23,11 +23,8 @@ const NotificationPopup = ({
             <div className="Avada-SP__Title">
               {firstName} in {city}, {country}
             </div>
-            <div className="Avada-SP__Subtitle">
-              Purchased{' '}
-              {truncateProductName && productName.length > 15
-                ? productName.slice(0, 15) + '...'
-                : productName}
+            <div className={`Avada-SP__Subtitle${truncateProductName ? '--truncated' : ''}`}>
+              Purchased {productName}
             </div>
             <div className="Avada-SP__Footer">
               {hideTimeAgo ? '' : `${moment(timestamp).fromNow()}`}

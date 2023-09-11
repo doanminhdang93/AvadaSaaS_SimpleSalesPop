@@ -10,19 +10,10 @@ import useEditApi from '../../hooks/api/useEditApi';
 import SkeletonSettings from '../../loadables/Settings/SkeletonSettings';
 
 const Settings = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  const handleTabChange = selectedTabIndex => {
-    setSelectedTab(selectedTabIndex);
-  };
-
   const {data: input, setData: setInput, loading} = useFetchApi({
     url: '/settings',
     defaultData: defaultSettings
   });
-
-  const {editing, handleEdit} = useEditApi({url: '/settings'});
-
   const handleInputChange = (key, value) => {
     setInput(prevInput => ({
       ...prevInput,
@@ -30,8 +21,18 @@ const Settings = () => {
     }));
   };
 
+  const [message, setMessage] = useState('');
+  const {editing, handleEdit} = useEditApi({url: '/settings'});
   const handleSave = async () => {
-    await handleEdit(input);
+    try {
+      if (input.allowShow === 'specific' && !input.includedUrls.trim()) {
+        throw new Error('You need to enter a valid included pages!');
+      }
+      await handleEdit(input);
+      setMessage('');
+    } catch (error) {
+      setMessage(error.message);
+    }
   };
 
   const primaryAction = {
@@ -39,9 +40,14 @@ const Settings = () => {
     onAction: () => {
       handleSave();
     },
-    loading: editing
+    loading: editing,
+    disabled: loading
   };
 
+  const [selectedTab, setSelectedTab] = useState(0);
+  const handleTabChange = selectedTabIndex => {
+    setSelectedTab(selectedTabIndex);
+  };
   const tabs = [
     {
       id: 'display-settings',
@@ -51,7 +57,13 @@ const Settings = () => {
     {
       id: 'triggers-settings',
       content: 'Triggers',
-      bodyContent: <TriggersSettings settings={input} handleChangeSettings={handleInputChange} />
+      bodyContent: (
+        <TriggersSettings
+          message={message}
+          settings={input}
+          handleChangeSettings={handleInputChange}
+        />
+      )
     }
   ];
 

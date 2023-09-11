@@ -3,25 +3,28 @@ import {
   FormLayout,
   Layout,
   SkeletonBodyText,
+  SkeletonDisplayText,
   SkeletonPage,
-  SkeletonThumbnail,
   TextContainer
 } from '@shopify/polaris';
 import React from 'react';
 
 export default function SkeletonSettings() {
   return (
-    <SkeletonPage fullWidth>
-      <Layout>
-        <Layout.Section secondary>
+    <Layout>
+      <Layout.Section secondary>
+        <Card sectioned>
           <SkeletonBodyText />
-        </Layout.Section>
-        <Layout.Section>
-          <Card>
+        </Card>
+      </Layout.Section>
+      <Layout.Section>
+        <Card sectioned>
+          <TextContainer>
+            <SkeletonDisplayText />
             <SkeletonBodyText lines={10} />
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </SkeletonPage>
+          </TextContainer>
+        </Card>
+      </Layout.Section>
+    </Layout>
   );
 }

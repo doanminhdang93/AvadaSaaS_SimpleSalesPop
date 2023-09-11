@@ -1,5 +1,6 @@
 import {Firestore} from '@google-cloud/firestore';
 import {getOrdersGraphQLQuery} from '../services/shopifyGraphQL';
+import Shopify from 'shopify-api-node';
 
 /**
  * @documentation
@@ -34,13 +35,13 @@ export async function getNotificationItem(shopify, orderData) {
   const productWithId = await shopify.product.get(orderData.line_items[0].product_id);
 
   const notification = {
-    timestamp: orderData.updated_at,
-    firstName: orderData.billing_address.first_name,
-    city: orderData.billing_address.city,
-    country: orderData.billing_address.country,
-    productId: orderData.line_items[0].product_id,
-    productName: orderData.line_items[0].name,
-    productImage: productWithId.images[0].src
+    timestamp: new Date(orderData?.updated_at),
+    firstName: orderData?.billing_address.first_name,
+    city: orderData?.billing_address.city,
+    country: orderData?.billing_address.country,
+    productId: orderData?.line_items[0].product_id,
+    productName: orderData?.line_items[0].name,
+    productImage: productWithId?.images[0].src
   };
 
   return notification;
@@ -76,7 +77,6 @@ export async function getNotifications({shopId, page = 1, limit = 5, sort = 'des
   });
 
   const pageInfo = {
-    count,
     page: parseInt(page),
     limit: parseInt(limit),
     sort
@@ -88,9 +88,13 @@ export async function getNotifications({shopId, page = 1, limit = 5, sort = 'des
 export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   const response = await getOrdersGraphQLQuery(shopifyDomain, accessToken);
 
+  if (!response.orders.edges) return null;
+
   const orders = response.orders.edges.map(item => {
+    if (!item.node) return null;
+
     const notification = {
-      timestamp: new Date(item.node.updatedAt),
+      timestamp: new Date(item.node?.updatedAt),
       firstName: item.node?.billingAddress.firstName,
       city: item.node?.billingAddress.city,
       country: item.node?.billingAddress.country,
@@ -106,3 +110,21 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
 
   return orders;
 }
+
+export const getNotificationsByDomain = async shopifyDomain => {
+  const notificationsDocs = await notificationsRef
+    .where('shopifyDomain', '==', shopifyDomain)
+    .orderBy('timestamp', 'desc')
+    .get();
+  if (notificationsDocs.empty) {
+    return null;
+  }
+  const notifications = await notificationsDocs.docs.map(doc => {
+    return {
+      ...doc.data(),
+      id: doc.id
+    };
+  });
+
+  return notifications;
+};

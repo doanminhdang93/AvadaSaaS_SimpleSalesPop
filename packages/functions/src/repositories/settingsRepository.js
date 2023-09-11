@@ -55,3 +55,19 @@ export async function updateSetting(shopId, updatedData) {
   const settingDoc = settingDocs.docs[0];
   await settingRef.doc(settingDoc.id).update(updatedData);
 }
+
+export async function getSettingsByDomain(shopifyDomain) {
+  const settingDocs = await settingRef
+    .where('shopifyDomain', '==', shopifyDomain)
+    .limit(1)
+    .get();
+  if (settingDocs.empty) {
+    return null;
+  }
+  const settingDoc = settingDocs.docs[0];
+
+  return {
+    ...settingDoc.data(),
+    id: settingDoc.id
+  };
+}

@@ -2,13 +2,14 @@ import {Card, Layout, Page, Pagination, ResourceItem, ResourceList, Stack} from 
 import React, {useState} from 'react';
 import NotificationsItem from '../../components/NotificationItem/NotificationItem';
 import useFetchApi from '../../hooks/api/useFetchApi';
+import EmptyStateMarkup from '../../config/emptyState/emptyState';
 
 const Notifications = () => {
   const [sortValue, setSortValue] = useState('desc');
-  const [selectedItems, setSelectedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  const {data: notifications, loading, pageInfo, count, fetchApi} = useFetchApi({
+  const {data: notifications, loading, pageInfo, count, fetchApi, fetched} = useFetchApi({
     url: '/notifications',
     initQueries: {
       page: currentPage,
@@ -42,6 +43,7 @@ const Notifications = () => {
               resourceName={resourceName}
               items={notifications}
               selectable
+              emptyState={fetched && <EmptyStateMarkup />}
               selectedItems={selectedItems}
               onSelectionChange={setSelectedItems}
               sortValue={sortValue}
@@ -54,11 +56,6 @@ const Notifications = () => {
                   <NotificationsItem item={item} />
                 </ResourceItem>
               )}
-              promotedBulkActions={[
-                {
-                  content: 'Delete'
-                }
-              ]}
               sortOptions={[
                 {label: 'Newest update', value: 'desc'},
                 {label: 'Oldest update', value: 'asc'}
