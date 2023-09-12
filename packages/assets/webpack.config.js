@@ -16,7 +16,7 @@ const environmentPath = !process.env.ENVIRONMENT ? '.env' : `.env.${process.env.
 const isEmbeddedApp = process.env.IS_EMBEDDED_APP === 'yes';
 const indexFile = isEmbeddedApp ? 'embed' : 'standalone';
 const wpsPort = (process.env.WPS_PORT || 45000) + (isEmbeddedApp ? -5000 : 5000);
-
+// console.log(process.env);
 const [sslKey, sslCert] = ['ssl.key', 'ssl.crt'].map(file => {
   try {
     return fs.readFileSync(path.resolve(__dirname, '../../../ssl/' + file), 'utf8');

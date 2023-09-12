@@ -6,7 +6,6 @@ export async function getNewOrder(ctx) {
   try {
     const shopifyDomain = ctx.get('X-Shopify-Shop-Domain');
     const orderData = ctx.req.body;
-    // console.log(orderData);
     const shop = await getShopByShopifyDomain(shopifyDomain);
     const shopify = new Shopify({
       shopName: shopifyDomain,

@@ -6,10 +6,10 @@ export async function getOrdersGraphQLQuery(shopifyDomain, accessToken) {
     accessToken: accessToken
   });
   const graphQlQuery = `{
-    orders(first:30,sortKey:UPDATED_AT) {
+    orders(first:30,sortKey:CREATED_AT) {
       edges{
         node{
-          updatedAt
+          createdAt
           billingAddress{
             firstName
             city

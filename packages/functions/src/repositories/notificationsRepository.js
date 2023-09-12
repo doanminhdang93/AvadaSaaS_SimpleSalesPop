@@ -1,6 +1,5 @@
 import {Firestore} from '@google-cloud/firestore';
 import {getOrdersGraphQLQuery} from '../services/shopifyGraphQL';
-import Shopify from 'shopify-api-node';
 
 /**
  * @documentation
@@ -32,16 +31,25 @@ export async function addNewNotification({shopId, shopifyDomain, data}) {
 }
 
 export async function getNotificationItem(shopify, orderData) {
-  const productWithId = await shopify.product.get(orderData.line_items[0].product_id);
+  if (!orderData) return null;
+
+  const line_items = orderData.line_items;
+  const billing_address = orderData.billing_address;
+
+  if (!line_items || !billing_address) return null;
+
+  const productWithId = await shopify.product.get(line_items[0].product_id);
+
+  if (!productWithId) return null;
 
   const notification = {
-    timestamp: new Date(orderData?.updated_at),
-    firstName: orderData?.billing_address.first_name,
-    city: orderData?.billing_address.city,
-    country: orderData?.billing_address.country,
-    productId: orderData?.line_items[0].product_id,
-    productName: orderData?.line_items[0].name,
-    productImage: productWithId?.images[0].src
+    timestamp: new Date(orderData.created_at),
+    firstName: billing_address.first_name,
+    city: billing_address.city,
+    country: billing_address.country,
+    productId: line_items[0].product_id,
+    productName: line_items[0].name,
+    productImage: productWithId.images[0].src
   };
 
   return notification;
@@ -93,22 +101,29 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   const orders = response.orders.edges.map(item => {
     if (!item.node) return null;
 
+    const nodeItem = item.node;
+    const billingAddress = nodeItem.billingAddress;
+    const lineItems = nodeItem.lineItems;
+    const lineItemsNode = lineItems.edges[0].node;
+
+    if (!billingAddress || !lineItems || !lineItemsNode) return null;
+
+    const productID = lineItemsNode.product.id.split('/').pop();
+
     const notification = {
-      timestamp: new Date(item.node?.updatedAt),
-      firstName: item.node?.billingAddress.firstName,
-      city: item.node?.billingAddress.city,
-      country: item.node?.billingAddress.country,
-      productName: item.node?.lineItems.edges[0].node.name,
-      productImage: item.node?.lineItems.edges[0].node.product.featuredImage.url,
-      productId: parseInt(item.node?.lineItems.edges[0].node.product.id.match(/\d+/)[0]),
+      timestamp: new Date(nodeItem.createdAt),
+      firstName: billingAddress.firstName,
+      city: billingAddress.city,
+      country: billingAddress.country,
+      productName: lineItemsNode.name,
+      productImage: lineItemsNode.product.featuredImage.url,
+      productId: productID,
       shopId: shopId,
       shopifyDomain: shopifyDomain
     };
     return notificationsRef.add(notification);
   });
   await Promise.all(orders);
-
-  return orders;
 }
 
 export const getNotificationsByDomain = async shopifyDomain => {
@@ -119,7 +134,7 @@ export const getNotificationsByDomain = async shopifyDomain => {
   if (notificationsDocs.empty) {
     return null;
   }
-  const notifications = await notificationsDocs.docs.map(doc => {
+  const notifications = notificationsDocs.docs.map(doc => {
     return {
       ...doc.data(),
       id: doc.id
