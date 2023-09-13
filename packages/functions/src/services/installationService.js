@@ -1,8 +1,8 @@
 import {getShopByShopifyDomain} from '@avada/shopify-auth';
-import {syncNotifications} from '../repositories/notificationsRepository';
-import {addNewSetting} from '../repositories/settingsRepository';
+import {syncNotifications, deleteNotifications} from '../repositories/notificationsRepository';
+import {addNewSetting, deleteSetting} from '../repositories/settingsRepository';
 import defaultSettings from '../const/defaultSettings';
-import {registerWebhook} from './shopifyServices';
+import {registerWebhook, registerScriptTags} from './shopifyServices';
 
 export async function afterInstallService(ctx) {
   try {
@@ -24,7 +24,22 @@ export async function afterInstallService(ctx) {
         shopifyDomain,
         accessToken: shop.accessToken
       })
+
+      // registerScriptTags({
+      //   shopifyDomain,
+      //   accessToken: shop.accessToken
+      // })
     ]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function afterUninstallService(ctx) {
+  try {
+    const shopifyDomain = ctx.get('x-shopify-shop-domain');
+    const shop = await getShopByShopifyDomain(shopifyDomain);
+    await Promise.all([deleteSetting(shop.id), deleteNotifications(shop.id)]);
   } catch (err) {
     console.error(err);
   }

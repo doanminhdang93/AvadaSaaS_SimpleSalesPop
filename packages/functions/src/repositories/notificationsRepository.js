@@ -1,5 +1,6 @@
 import {Firestore} from '@google-cloud/firestore';
 import {getOrdersGraphQLQuery} from '../services/shopifyGraphQL';
+import Shopify from 'shopify-api-node';
 
 /**
  * @documentation
@@ -31,16 +32,16 @@ export async function addNewNotification({shopId, shopifyDomain, data}) {
 }
 
 export async function getNotificationItem(shopify, orderData) {
-  if (!orderData) return null;
+  if (!orderData) return {};
 
-  const line_items = orderData.line_items;
-  const billing_address = orderData.billing_address;
+  const line_items = orderData.line_items || [];
+  const billing_address = orderData.billing_address || {};
 
-  if (!line_items || !billing_address) return null;
+  if (!line_items || !billing_address) return {};
 
   const productWithId = await shopify.product.get(line_items[0].product_id);
 
-  if (!productWithId) return null;
+  if (!productWithId || !productWithId.images) return {};
 
   const notification = {
     timestamp: new Date(orderData.created_at),
@@ -96,17 +97,17 @@ export async function getNotifications({shopId, page = 1, limit = 5, sort = 'des
 export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   const response = await getOrdersGraphQLQuery(shopifyDomain, accessToken);
 
-  if (!response.orders.edges) return null;
+  if (!response.orders.edges) return {};
 
   const orders = response.orders.edges.map(item => {
-    if (!item.node) return null;
+    if (!item.node) return {};
 
-    const nodeItem = item.node;
-    const billingAddress = nodeItem.billingAddress;
-    const lineItems = nodeItem.lineItems;
-    const lineItemsNode = lineItems.edges[0].node;
+    const nodeItem = item.node || {};
+    const billingAddress = nodeItem.billingAddress || {};
+    const lineItems = nodeItem.lineItems || {};
+    const lineItemsNode = lineItems.edges[0].node || {};
 
-    if (!billingAddress || !lineItems || !lineItemsNode) return null;
+    if (!billingAddress || !lineItems || !lineItemsNode) return {};
 
     const productID = lineItemsNode.product.id.split('/').pop();
 
@@ -141,5 +142,15 @@ export const getNotificationsByDomain = async shopifyDomain => {
     };
   });
 
-  return notifications;
+  const notificationsHidedShopId = notifications.map(notification => {
+    return Object.fromEntries(Object.entries(notification).filter(([key]) => key !== 'shopId'));
+  });
+
+  return notificationsHidedShopId;
 };
+
+export async function deleteNotifications(shopId) {
+  const notificationDocs = await notificationsRef.where('shopId', '==', shopId).get();
+  const notificationIds = notificationDocs.docs.map(doc => doc.id);
+  await Promise.all(notificationIds.map(async id => await notificationsRef.doc(id).delete()));
+}

@@ -66,8 +66,19 @@ export async function getSettingsByDomain(shopifyDomain) {
   }
   const settingDoc = settingDocs.docs[0];
 
+  const settingsData = Object.fromEntries(
+    Object.entries(settingDoc.data()).filter(([key]) => key !== 'shopId')
+  );
+
   return {
-    ...settingDoc.data(),
+    ...settingsData,
     id: settingDoc.id
   };
+}
+
+export async function deleteSetting(shopId) {
+  const settingDocs = await settingRef.where('shopId', '==', shopId).get();
+
+  const settingIDs = settingDocs.docs.map(doc => doc.id);
+  await settingRef.doc(settingIDs[0]).delete();
 }

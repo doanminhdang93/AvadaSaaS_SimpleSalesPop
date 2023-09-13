@@ -40,14 +40,6 @@
         "function": "api"
       },
       {
-        "source": "/webhook/**",
-        "function": "webhook"
-      },
-      {
-        "source": "/clientApi/**",
-        "function": "clientApi"
-      },
-      {
         "source": "/apiSa/**",
         "function": "apiSa"
       },
@@ -58,6 +50,14 @@
       {
         "source": "/authSa/**",
         "function": "authSa"
+      },
+      {
+        "source": "/webhook/**",
+        "function": "webhook"
+      },
+      {
+        "source": "/clientApi/**",
+        "function": "clientApi"
       },
       {
         "source": "/embed/**",

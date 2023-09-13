@@ -1,10 +1,8 @@
 import moment from 'moment';
 
-export async function notificationsPresenter(notifications) {
+export function presentNotifications(notifications) {
   const notificationsPresented = notifications.map(notification => {
-    const timestampToMoment = moment(
-      notification.timestamp._seconds * 1000 + notification.timestamp._nanoseconds / 1000000
-    ).fromNow();
+    const timestampToMoment = moment(notification.timestamp.toDate()).fromNow();
     return {
       ...notification,
       timestamp: timestampToMoment

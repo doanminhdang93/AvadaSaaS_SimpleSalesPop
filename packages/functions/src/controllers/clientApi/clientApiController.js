@@ -1,18 +1,19 @@
-import {notificationsPresenter} from '../../presenters/notificationsPresenter';
+import {log} from 'firebase-functions/logger';
+import {presentNotifications} from '../../presenters/notificationsPresenter';
 import {getNotificationsByDomain} from '../../repositories/notificationsRepository';
 import {getSettingsByDomain} from '../../repositories/settingsRepository';
 
 export async function listData(ctx) {
   try {
     const {shopifyDomain} = ctx.query;
-    const notifications = await getNotificationsByDomain(shopifyDomain);
-    const settings = await getSettingsByDomain(shopifyDomain);
-
-    const notificationsPresented = await notificationsPresenter(notifications);
+    const [notifications, settings] = await Promise.all([
+      getNotificationsByDomain(shopifyDomain),
+      getSettingsByDomain(shopifyDomain)
+    ]);
     return (ctx.body = {
       data: {
         settings: settings,
-        notifications: notificationsPresented
+        notifications: presentNotifications(notifications)
       }
     });
   } catch (err) {
