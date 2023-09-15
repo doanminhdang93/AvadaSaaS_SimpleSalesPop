@@ -3,7 +3,7 @@ const Shopify = require('shopify-api-node');
 (async () => {
   const shopify = new Shopify({
     shopName: 'avada-saas-training.myshopify.com',
-    accessToken: 'shpua_1e80202109b50ef2f7a581d23e4fb958'
+    accessToken: 'shpua_9266b040a945d499ea35ea3b448d18c3'
   });
 
   const scriptTags = await shopify.scriptTag.list();

@@ -1,10 +1,11 @@
 import {insertAfter} from '../helpers/insertHelpers';
 import {render} from 'preact';
-import React from 'preact/compat';
-import NotificationPopup from '../components/NotificationPopup/NotificationPopup';
+import React from 'react';
+import lazy from 'preact-lazy';
+
+const NotificationPopup = lazy(() => import('../components/NotificationPopup/NotificationPopup'));
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-
 export default class DisplayManager {
   constructor() {
     this.notifications = [];
@@ -19,18 +20,26 @@ export default class DisplayManager {
 
   checkAndInsertContainer(settings) {
     const {allowShow, includedUrls, excludedUrls} = settings;
+
+    // if (allowShow === 'all' && excludedUrls === '') {
+    //   this.insertContainer();
+    // }
+
     const listIncludedUrls = includedUrls.split('\n');
     const listExcludedUrls = excludedUrls.split('\n');
 
+    const uniqueIncludesUrls = [...new Set(listIncludedUrls)];
+    const uniqueExcludesUrls = [...new Set(listExcludedUrls)];
+
     if (allowShow === 'all') {
-      for (const url of listExcludedUrls) {
+      for (const url of uniqueExcludesUrls) {
         if (window.location.href !== url) {
           this.insertContainer();
         }
       }
     }
     if (allowShow === 'specific') {
-      for (const url of listIncludedUrls) {
+      for (const url of uniqueIncludesUrls) {
         if (window.location.href === url) {
           this.insertContainer();
         }

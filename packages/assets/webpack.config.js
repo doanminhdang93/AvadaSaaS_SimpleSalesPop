@@ -143,7 +143,8 @@ const plugins = [
         '**/*',
         '!embed.html*',
         '!standalone.html*',
-        `!${isEmbeddedApp ? 'standalone' : 'embed'}/**`
+        `!${isEmbeddedApp ? 'standalone' : 'embed'}/**`,
+        '!scripttag/**'
       ]
     }),
   isHotReloadEnabled &&

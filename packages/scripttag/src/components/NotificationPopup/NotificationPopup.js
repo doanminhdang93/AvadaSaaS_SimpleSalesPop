@@ -42,7 +42,7 @@ const NotificationPopup = ({
             className="Avada-SP__ClosePopup"
             onClick={() => {
               const container = document.querySelector('#Avada-SalePop');
-              container.classList.add('fadeOut');
+              container.remove();
             }}
           >
             <img

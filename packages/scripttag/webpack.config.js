@@ -15,7 +15,10 @@ module.exports = {
   entry: ['./src/index.js'],
   output: {
     path: path.resolve(__dirname, '../../static/scripttag'),
-    filename: 'avada-sale-pop.min.js'
+    filename: 'avada-sale-pop.min.js',
+    publicPath: 'https://localhost:3000/scripttag/',
+    chunkFilename: 'avada-sale-pop.min-[name].[contenthash].bundle.js',
+    jsonpFunction: 'salesPopLoader'
   },
   resolve: {
     alias: {
