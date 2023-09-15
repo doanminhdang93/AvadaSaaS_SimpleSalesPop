@@ -15,7 +15,7 @@ const NotificationsItem = ({item}) => {
   return (
     <Stack distribution="equalSpacing">
       <NotificationPopup
-        firstName={firstName}
+        firstName={firstName || 'Someone'}
         city={city}
         country={country}
         productName={productName}

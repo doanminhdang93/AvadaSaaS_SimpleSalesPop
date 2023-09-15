@@ -1,11 +1,27 @@
 .Avada-SP__Wrapper {
-  width: 293px;
-  position: relative;
+  width: 290px;
+  position: fixed;
   z-index: 99;
   color: #333;
 }
+.Avada-SP__Wrapper--bottom-left {
+  bottom: 20px;
+  left: 90px;
+}
+.Avada-SP__Wrapper--bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+.Avada-SP__Wrapper--top-left {
+  top: 20px;
+  left: 20px;
+}
+.Avada-SP__Wrapper--top-right {
+  top: 20px;
+  right: 20px;
+}
 
-.Avada-SP__Wrapper .Avada-SP__LinkWrapper {
+.Avada-SP__LinkWrapper {
   color: #333;
 }
 @media screen and (max-width: 575px) {
@@ -30,6 +46,7 @@
   box-shadow: 3px 0 5px rgba(5, 5, 5, 0.07);
   background: #ffffff;
   padding: 5px;
+  position: relative;
 }
 .Avada-SP__Wrapper .Avada-SP__Image {
   height: 65px;
@@ -83,9 +100,17 @@
 }
 .Avada-SP__ClosePopup {
   position: absolute;
-  top: 5px;
+  top: 0px;
   right: 8px;
   cursor: pointer;
   width: 10px;
   height: 10px;
+}
+
+// .Avada-SalePop__OuterWrapper {
+//   visibility: visible;
+// }
+
+.fadeOut {
+  display: none;
 }

@@ -64,6 +64,7 @@ export async function getSettingsByDomain(shopifyDomain) {
   if (settingDocs.empty) {
     return null;
   }
+
   const settingDoc = settingDocs.docs[0];
 
   const settingsData = Object.fromEntries(

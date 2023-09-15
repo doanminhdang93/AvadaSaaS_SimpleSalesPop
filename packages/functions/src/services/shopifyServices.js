@@ -27,16 +27,25 @@ export async function registerWebhook({shopifyDomain, accessToken}) {
   });
 }
 
-// export async function registerScriptTags({shopifyDomain, accessToken}) {
-//   const shopify = new Shopify({
-//     shopName: shopifyDomain,
-//     accessToken: accessToken
-//   });
+export async function registerScriptTags({shopifyDomain, accessToken}) {
+  const shopify = new Shopify({
+    shopName: shopifyDomain,
+    accessToken: accessToken
+  });
 
-//   await shopify.scriptTag.create({
-//     event: 'onLoad',
-//     src: `https://${appConfig.baseUrl}/scriptTag.js`,
-//     display_scope: 'all',
-//     cache: false
-//   });
-// }
+  // Check if scriptTag already exists
+  const scriptTags = await shopify.scriptTag.list();
+  const existingScriptTag = scriptTags.find(
+    scriptTag => scriptTag.src === `https://localhost:3000/scripttag/avada-sale-pop.min.js`
+  );
+
+  if (existingScriptTag) {
+    console.log('ScriptTag already exists!');
+    return;
+  }
+
+  await shopify.scriptTag.create({
+    event: 'onload',
+    src: `https://localhost:3000/scripttag/avada-sale-pop.min.js`
+  });
+}

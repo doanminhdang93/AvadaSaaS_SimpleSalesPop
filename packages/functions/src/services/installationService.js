@@ -23,12 +23,12 @@ export async function afterInstallService(ctx) {
       registerWebhook({
         shopifyDomain,
         accessToken: shop.accessToken
-      })
+      }),
 
-      // registerScriptTags({
-      //   shopifyDomain,
-      //   accessToken: shop.accessToken
-      // })
+      registerScriptTags({
+        shopifyDomain,
+        accessToken: shop.accessToken
+      })
     ]);
   } catch (err) {
     console.error(err);

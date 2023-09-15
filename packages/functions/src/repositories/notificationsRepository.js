@@ -45,7 +45,7 @@ export async function getNotificationItem(shopify, orderData) {
 
   const notification = {
     timestamp: new Date(orderData.created_at),
-    firstName: billing_address.first_name,
+    firstName: billing_address?.first_name,
     city: billing_address.city,
     country: billing_address.country,
     productId: line_items[0].product_id,
@@ -113,7 +113,7 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
 
     const notification = {
       timestamp: new Date(nodeItem.createdAt),
-      firstName: billingAddress.firstName,
+      firstName: billingAddress?.firstName,
       city: billingAddress.city,
       country: billingAddress.country,
       productName: lineItemsNode.name,
