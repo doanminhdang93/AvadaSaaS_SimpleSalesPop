@@ -4,7 +4,6 @@ import React from 'react';
 import lazy from 'preact-lazy';
 
 const NotificationPopup = lazy(() => import('../components/NotificationPopup/NotificationPopup'));
-
 const delay = ms => new Promise(res => setTimeout(res, ms));
 export default class DisplayManager {
   constructor() {
@@ -20,11 +19,6 @@ export default class DisplayManager {
 
   checkAndInsertContainer(settings) {
     const {allowShow, includedUrls, excludedUrls} = settings;
-
-    // if (allowShow === 'all' && excludedUrls === '') {
-    //   this.insertContainer();
-    // }
-
     const listIncludedUrls = includedUrls.split('\n');
     const listExcludedUrls = excludedUrls.split('\n');
 
