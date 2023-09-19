@@ -13,32 +13,29 @@ export default class DisplayManager {
   async initialize({notifications, settings}) {
     this.notifications = notifications;
     this.settings = settings;
-    this.checkAndInsertContainer(settings);
-    this.displayPopups(notifications, settings);
+    if (this.checkUrls(settings)) {
+      this.insertContainer();
+      this.displayPopups(notifications, settings);
+    }
   }
 
-  checkAndInsertContainer(settings) {
+  checkUrls(settings) {
     const {allowShow, includedUrls, excludedUrls} = settings;
     const listIncludedUrls = includedUrls.split('\n');
     const listExcludedUrls = excludedUrls.split('\n');
-
     const uniqueIncludesUrls = [...new Set(listIncludedUrls)];
     const uniqueExcludesUrls = [...new Set(listExcludedUrls)];
 
-    if (allowShow === 'all') {
-      for (const url of uniqueExcludesUrls) {
-        if (window.location.href !== url) {
-          this.insertContainer();
-        }
-      }
+    const currentUrl = window.location.href.replace(/[?#].*$/, '');
+    if (allowShow === 'all' && !uniqueExcludesUrls.includes(currentUrl)) {
+      return true;
     }
-    if (allowShow === 'specific') {
-      for (const url of uniqueIncludesUrls) {
-        if (window.location.href === url) {
-          this.insertContainer();
-        }
-      }
+
+    if (allowShow === 'specific' && uniqueIncludesUrls.includes(currentUrl)) {
+      return true;
     }
+
+    return false;
   }
 
   async displayPopups(notifications, settings) {

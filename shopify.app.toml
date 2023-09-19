@@ -2,7 +2,7 @@
 
 name = "Avada Simple Sales Pop"
 client_id = "3753ac1aa9bb890373212d2a802bfa65"
-application_url = "https://what-flowers-allowed-coming.trycloudflare.com/auth/shopify"
+application_url = "https://apollo-consciousness-flag-westminster.trycloudflare.com/auth/shopify"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://what-flowers-allowed-coming.trycloudflare.com/auth/shopify/callback",
-  "https://what-flowers-allowed-coming.trycloudflare.com/authSa/shopify/callback",
-  "https://what-flowers-allowed-coming.trycloudflare.com/auth/shopify/embed/callback",
+  "https://apollo-consciousness-flag-westminster.trycloudflare.com/auth/shopify/callback",
+  "https://apollo-consciousness-flag-westminster.trycloudflare.com/authSa/shopify/callback",
+  "https://apollo-consciousness-flag-westminster.trycloudflare.com/auth/shopify/embed/callback",
   "https://localhost:3000/auth/shopify/callback",
   "https://localhost:3000/authSa/shopify/callback",
   "https://localhost:3000/auth/shopify/embed/callback"
