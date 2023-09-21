@@ -1,5 +1,11 @@
 import Shopify from 'shopify-api-node';
 
+/**
+ *
+ * @param {string} shopifyDomain
+ * @param {string} accessToken
+ * @returns
+ */
 export async function getOrdersGraphQLQuery(shopifyDomain, accessToken) {
   const shopify = new Shopify({
     shopName: shopifyDomain,
