@@ -1,5 +1,6 @@
 import makeRequest from '../helpers/api/makeRequest';
 
+const BASE_URL = 'https://localhost:3000';
 export default class ApiManager {
   getNotifications = async () => {
     return this.getApiData();
@@ -8,10 +9,9 @@ export default class ApiManager {
   getApiData = async () => {
     try {
       const response = await makeRequest(
-        'https://localhost:3000/clientApi/notifications?shopifyDomain=avada-saas-training.myshopify.com'
+        `${BASE_URL}/clientApi/notifications?shopifyDomain=avada-saas-training.myshopify.com`
       );
-      const {notifications, settings} = response.data;
-      return {notifications, settings};
+      return response.data;
     } catch (error) {
       console.error(error);
       return {};
