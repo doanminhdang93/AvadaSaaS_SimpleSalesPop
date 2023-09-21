@@ -13,8 +13,7 @@ const settingRef = firestore.collection('settings');
 /**
  * @param {string} shopId
  * @param {Object} data
- * @param {Object} updatedData
- * @returns {Object}
+ * @returns
  */
 export async function addNewSetting(shopId, data) {
   const setting = await getSetting(shopId);
@@ -26,6 +25,11 @@ export async function addNewSetting(shopId, data) {
   }
 }
 
+/**
+ *
+ * @param {string} shopId
+ * @returns {Object}
+ */
 export async function getSetting(shopId) {
   const settingDocs = await settingRef
     .where('shopId', '==', shopId)
@@ -42,6 +46,12 @@ export async function getSetting(shopId) {
   };
 }
 
+/**
+ *
+ * @param {string} shopId
+ * @param {Object} updatedData
+ * @returns
+ */
 export async function updateSetting(shopId, updatedData) {
   const settingDocs = await settingRef
     .where('shopId', '==', shopId)
@@ -56,6 +66,11 @@ export async function updateSetting(shopId, updatedData) {
   await settingRef.doc(settingDoc.id).update(updatedData);
 }
 
+/**
+ *
+ * @param {string} shopifyDomain
+ * @returns {Object}
+ */
 export async function getSettingsByDomain(shopifyDomain) {
   const settingDocs = await settingRef
     .where('shopifyDomain', '==', shopifyDomain)
@@ -77,6 +92,10 @@ export async function getSettingsByDomain(shopifyDomain) {
   };
 }
 
+/**
+ *
+ * @param {string} shopId
+ */
 export async function deleteSetting(shopId) {
   const settingDocs = await settingRef.where('shopId', '==', shopId).get();
 

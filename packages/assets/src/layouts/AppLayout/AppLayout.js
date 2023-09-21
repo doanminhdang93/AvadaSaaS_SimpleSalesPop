@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Frame, Loading, Scrollable, Toast} from '@shopify/polaris';
+import {Frame, Scrollable, Toast} from '@shopify/polaris';
 import PropTypes from 'prop-types';
 import {useStore} from '@assets/reducers/storeReducer';
 import {closeToast} from '@assets/actions/storeActions';
@@ -35,7 +35,6 @@ export default function AppLayout({children}) {
         </div>
         <Scrollable className={contentClass.join(' ')}>{children}</Scrollable>
       </div>
-      {/* {loading && <Loading />} */}
       {toast && <Toast onDismiss={() => closeToast(dispatch)} {...toast} />}
     </Frame>
   );

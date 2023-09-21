@@ -4,7 +4,6 @@ import NotificationPopup from '../../components/NotificationPopup/NotificationPo
 import DisplaySettings from '../../components/DisplaySettings/DisplaySettings';
 import TriggersSettings from '../../components/TriggerSettings/TriggersSettings';
 import defaultSettings from '../../const/defaultSettings';
-import '../../styles/components/settings.css';
 import useFetchApi from '../../hooks/api/useFetchApi';
 import useEditApi from '../../hooks/api/useEditApi';
 import SkeletonSettings from '../../loadables/Settings/SkeletonSettings';

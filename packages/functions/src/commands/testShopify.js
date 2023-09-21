@@ -4,40 +4,26 @@ const Shopify = require('shopify-api-node');
 (async () => {
   const shopify = new Shopify({
     shopName: 'avada-saas-training.myshopify.com',
-    accessToken: 'shpua_597d6b0731beffce8eef9963276391f2'
+    accessToken: 'shpua_4e9b4b7b3a9d6520b2b724259c1f5100'
   });
-
-  // await shopify.scriptTag.delete(235640062269);
-  const test = await shopify.scriptTag.list();
-
-  console.log(test);
-
-  // const data = await shopify.theme.list();
+  const data = await shopify.theme.list();
   // console.log(data);
 
-  // const idTheme = data[0].id;
+  const idTheme = data[0].id;
+  const templateJson = await shopify.asset.get(idTheme, {
+    asset: {key: 'config/settings_data.json'}
+  });
+  let templateValue = JSON.parse(templateJson.value);
+  let blocks = templateValue.current.blocks;
 
-  // await shopify.asset.create(idTheme, {
-  //   key: 'snippets/avada-sale-pop.liquid',
-  //   value: `<script>
-  //     window.AVADA_SIMPLE_SALES_POP_SETTING={{shop.metafields.simple_sales_pop.setting | json}};
-  //     window.AVADA_SIMPLE_SALES_POP_NOTIFICATIONS={{shop.metafields.simple_sales_pop.notifications | json}};
-  //   </script>`
-  // });
+  let updatedData = Object.fromEntries(
+    Object.entries(blocks).map(([key, value]) => [key, {...value, disabled: false}])
+  );
+  console.log(updatedData);
+  templateValue.current.blocks = updatedData;
 
-  // console.log(test);
-  // const test = await shopify.metafield.list({namespace: 'simple_sales_pop', key: 'setting'});
-  // console.log(JSON.parse(test[0].value));
-
-  // const scriptTags = await shopify.scriptTag.list();
-  // console.log(scriptTags);
-
-  // const webhooks = await shopify.webhook.list();
-  // console.log(webhooks);
-
-  // const scriptTag = await shopify.scriptTag.create({
-  //   event: 'onload',
-  //   src: `https://localhost:3000/scripttag/avada-sale-pop.min.js`
-  // });
-  // console.log(scriptTag);
+  await shopify.asset.update(idTheme, {
+    key: 'config/settings_data.json',
+    value: JSON.stringify(templateValue)
+  });
 })();

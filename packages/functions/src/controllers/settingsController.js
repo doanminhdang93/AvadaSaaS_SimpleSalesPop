@@ -11,7 +11,7 @@ export async function handleAddNewSetting(ctx) {
     return (ctx.body = {
       success: true,
       data: newSetting,
-      message: 'Added new setting successfully!'
+      message: 'Setting was added successfully!'
     });
   } catch (err) {
     return (ctx.body = {
@@ -48,7 +48,7 @@ export async function handleUpdateSetting(ctx) {
     ctx.status = 200;
     return (ctx.body = {
       success: true,
-      message: 'Settings were updated successfully!'
+      message: 'Setting were updated successfully!'
     });
   } catch (error) {
     return (ctx.body = {

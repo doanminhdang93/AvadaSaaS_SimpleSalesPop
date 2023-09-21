@@ -11,8 +11,8 @@ export default class DisplayManager {
     this.settings = {};
   }
   async initialize({notifications, settings}) {
-    this.notifications = notifications;
-    this.settings = settings;
+    // this.notifications = notifications;
+    // this.settings = settings;
     if (this.checkUrls(settings)) {
       this.insertContainer();
       this.displayPopups(notifications, settings);

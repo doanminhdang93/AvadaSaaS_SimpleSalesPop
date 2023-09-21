@@ -14,15 +14,10 @@ const notificationsRef = firestore.collection('notifications');
 
 /**
  * @param {string} shopId
- * @param {string} page
- * @param {string} limit
- * @param {string} sort
  * @param {string} shopifyDomain
- * @param {string} accessToken
- * @param {Object} orderData
+ * @param {Object} data
  * @returns {Object}
  */
-
 export async function addNewNotification({shopId, shopifyDomain, data}) {
   await notificationsRef.add({
     ...data,
@@ -31,6 +26,12 @@ export async function addNewNotification({shopId, shopifyDomain, data}) {
   });
 }
 
+/**
+ *
+ * @param {Shopify} shopify
+ * @param {Object} orderData
+ * @returns {Object}
+ */
 export async function getNotificationItem(shopify, orderData) {
   if (!orderData) return {};
 
@@ -56,17 +57,22 @@ export async function getNotificationItem(shopify, orderData) {
   return notification;
 }
 
-export async function getNotifications({shopId, page = 1, limit = 5, sort = 'desc'}) {
+/**
+ *
+ * @param {string} shopId
+ * @param {string} page
+ * @param {string} limit
+ * @param {string} sort
+ * @returns {Object}
+ */
+export async function getNotifications({shopId, page = '1', limit = '5', sort = 'desc'}) {
   const baseQuery = notificationsRef.where('shopId', '==', shopId);
-
   const countRef = baseQuery.get();
-
   const paginateNotifications = baseQuery
     .orderBy('timestamp', sort === 'asc' ? 'asc' : 'desc')
     .limit(parseInt(limit))
     .offset((parseInt(page) - 1) * parseInt(limit))
     .get();
-
   const [countSnapshot, notificationsSnapshot] = await Promise.all([
     countRef,
     paginateNotifications
@@ -75,16 +81,13 @@ export async function getNotifications({shopId, page = 1, limit = 5, sort = 'des
   if (countRef.empty || paginateNotifications.empty) {
     return null;
   }
-
   const count = countSnapshot.size;
-
   const notifications = notificationsSnapshot.docs.map(doc => {
     return {
       ...doc.data(),
       id: doc.id
     };
   });
-
   const pageInfo = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -94,6 +97,13 @@ export async function getNotifications({shopId, page = 1, limit = 5, sort = 'des
   return {count, pageInfo, notifications};
 }
 
+/**
+ *
+ * @param {string} shopifyDomain
+ * @param {string} shopId
+ * @param {string} accessToken
+ * @returns
+ */
 export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   const response = await getOrdersGraphQLQuery(shopifyDomain, accessToken);
 
@@ -102,10 +112,10 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   const orders = response.orders.edges.map(item => {
     if (!item.node) return {};
 
-    const nodeItem = item.node || {};
-    const billingAddress = nodeItem.billingAddress || {};
-    const lineItems = nodeItem.lineItems || {};
-    const lineItemsNode = lineItems.edges[0].node || {};
+    const nodeItem = item.node;
+    const billingAddress = nodeItem.billingAddress;
+    const lineItems = nodeItem.lineItems;
+    const lineItemsNode = lineItems.edges[0].node;
 
     if (!billingAddress || !lineItems || !lineItemsNode) return {};
 
@@ -127,6 +137,11 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
   await Promise.all(orders);
 }
 
+/**
+ *
+ * @param {string} shopifyDomain
+ * @returns {Object}
+ */
 export const getNotificationsByDomain = async shopifyDomain => {
   const notificationsDocs = await notificationsRef
     .where('shopifyDomain', '==', shopifyDomain)
@@ -149,6 +164,10 @@ export const getNotificationsByDomain = async shopifyDomain => {
   return notificationsHidedShopId;
 };
 
+/**
+ *
+ * @param {string} shopId
+ */
 export async function deleteNotifications(shopId) {
   const notificationDocs = await notificationsRef.where('shopId', '==', shopId).get();
   const notificationIds = notificationDocs.docs.map(doc => doc.id);
