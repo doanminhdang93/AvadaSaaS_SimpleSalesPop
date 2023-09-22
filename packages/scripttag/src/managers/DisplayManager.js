@@ -4,7 +4,7 @@ import React from 'react';
 import lazy from 'preact-lazy';
 
 const NotificationPopup = lazy(() => import('../components/NotificationPopup/NotificationPopup'));
-const delay = ms => new Promise(res => setTimeout(res, ms));
+const delay = s => new Promise(res => setTimeout(res, s * 1000));
 export default class DisplayManager {
   constructor() {
     this.notifications = [];
@@ -28,24 +28,22 @@ export default class DisplayManager {
     if (allowShow === 'all' && !uniqueExcludesUrls.includes(currentUrl)) {
       return true;
     }
-
     if (allowShow === 'specific' && uniqueIncludesUrls.includes(currentUrl)) {
       return true;
     }
-
     return false;
   }
 
   async displayPopups(notifications, settings) {
     const {maxPopsDisplay, firstDelay, displayDuration, popsInterval} = settings;
     const popupsDisplayed = Math.min(maxPopsDisplay, notifications.length);
-    await delay(firstDelay * 1000);
+    await delay(firstDelay);
     for (let i = 0; i < popupsDisplayed; i++) {
       this.display({notification: notifications[i]}, settings);
-      await delay(displayDuration * 1000);
+      await delay(displayDuration);
       this.fadeOut();
       if (i < popupsDisplayed - 1) {
-        await delay(popsInterval * 1000);
+        await delay(popsInterval);
       }
     }
   }

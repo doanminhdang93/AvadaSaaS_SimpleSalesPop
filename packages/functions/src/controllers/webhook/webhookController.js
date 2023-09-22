@@ -14,7 +14,7 @@ export async function getNewOrder(ctx) {
     const notification = await getNotificationItem(shopify, orderData);
     await addNewNotification({shopId: shop.id, shopifyDomain, data: notification});
 
-    ctx.status = 201;
+    ctx.status = 200;
     return (ctx.body = {
       success: true
     });

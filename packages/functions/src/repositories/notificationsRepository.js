@@ -174,5 +174,5 @@ export async function deleteNotifications(shopId) {
     return;
   }
   const notificationIds = notificationDocs.docs.map(doc => doc.id);
-  await Promise.all(notificationIds.map(async id => await notificationsRef.doc(id).delete()));
+  await Promise.all(notificationIds.map(id => notificationsRef.doc(id).delete()));
 }

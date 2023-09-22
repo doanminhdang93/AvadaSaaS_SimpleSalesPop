@@ -51,7 +51,6 @@ const Notifications = () => {
                 <ResourceItem
                   id={item.id}
                   accessibilityLabel={`View details for ${item.productName}`}
-                  persistActions
                 >
                   <NotificationsItem item={item} />
                 </ResourceItem>
