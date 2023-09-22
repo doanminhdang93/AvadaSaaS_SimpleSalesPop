@@ -27,7 +27,7 @@ const NotificationPopup = ({
             />
             <div className="Avada-SP__Content">
               <div className={'Avada-SP__Title'}>
-                {firstName} in {city}, {country}
+                {firstName || 'Someone'} in {city}, {country}
               </div>
               <div className={`Avada-SP__Subtitle${truncateProductName ? '--truncated' : ''}`}>
                 Purchased {productName}
