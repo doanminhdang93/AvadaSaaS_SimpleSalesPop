@@ -170,6 +170,9 @@ export const getNotificationsByDomain = async shopifyDomain => {
  */
 export async function deleteNotifications(shopId) {
   const notificationDocs = await notificationsRef.where('shopId', '==', shopId).get();
+  if (notificationDocs.empty) {
+    return;
+  }
   const notificationIds = notificationDocs.docs.map(doc => doc.id);
   await Promise.all(notificationIds.map(async id => await notificationsRef.doc(id).delete()));
 }
