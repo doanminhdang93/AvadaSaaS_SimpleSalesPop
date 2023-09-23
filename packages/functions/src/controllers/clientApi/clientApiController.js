@@ -5,10 +5,9 @@ import {getSettingsByDomain} from '../../repositories/settingsRepository';
 export async function listData(ctx) {
   try {
     const {shopifyDomain} = ctx.query;
-    const [notifications, settings] = await Promise.all([
-      getNotificationsByDomain(shopifyDomain),
-      getSettingsByDomain(shopifyDomain)
-    ]);
+    const settings = await getSettingsByDomain(shopifyDomain);
+    const notifications = await getNotificationsByDomain(shopifyDomain, settings.maxPopsDisplay);
+
     return (ctx.body = {
       data: {
         settings: settings,

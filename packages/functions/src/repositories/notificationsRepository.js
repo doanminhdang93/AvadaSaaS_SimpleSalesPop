@@ -142,10 +142,11 @@ export async function syncNotifications({shopifyDomain, shopId, accessToken}) {
  * @param {string} shopifyDomain
  * @returns {Object}
  */
-export const getNotificationsByDomain = async shopifyDomain => {
+export const getNotificationsByDomain = async (shopifyDomain, maxPopsDisplay = 30) => {
   const notificationsDocs = await notificationsRef
     .where('shopifyDomain', '==', shopifyDomain)
     .orderBy('timestamp', 'desc')
+    .limit(maxPopsDisplay)
     .get();
   if (notificationsDocs.empty) {
     return null;

@@ -35,14 +35,13 @@ export default class DisplayManager {
   }
 
   async displayPopups(notifications, settings) {
-    const {maxPopsDisplay, firstDelay, displayDuration, popsInterval} = settings;
-    const popupsDisplayed = Math.min(maxPopsDisplay, notifications.length);
+    const {firstDelay, displayDuration, popsInterval} = settings;
     await delay(firstDelay);
-    for (let i = 0; i < popupsDisplayed; i++) {
+    for (let i = 0; i < notifications.length; i++) {
       this.display({notification: notifications[i]}, settings);
       await delay(displayDuration);
       this.fadeOut();
-      if (i < popupsDisplayed - 1) {
+      if (i < notifications.length - 1) {
         await delay(popsInterval);
       }
     }
