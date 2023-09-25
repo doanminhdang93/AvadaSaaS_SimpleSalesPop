@@ -9,6 +9,7 @@ const NotificationsItem = ({item}) => {
   const seconds = timestamp._seconds;
   const nanoSeconds = timestamp._nanoseconds;
   const notificationsTimestamp = seconds * 1000 + nanoSeconds / 1000000;
+  const notificationsTimestampToMoment = moment(notificationsTimestamp).fromNow();
 
   const formattedDate = moment(notificationsTimestamp).format('MMMM DD, YYYY');
 
@@ -19,9 +20,8 @@ const NotificationsItem = ({item}) => {
         city={city}
         country={country}
         productName={productName}
-        timestamp={notificationsTimestamp}
+        timestamp={notificationsTimestampToMoment}
         productImage={productImage}
-        // settings={data}
       ></NotificationPopup>
 
       <TextStyle variation="strong">From {formattedDate}</TextStyle>

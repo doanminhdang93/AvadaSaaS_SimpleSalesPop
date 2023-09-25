@@ -47,6 +47,7 @@ const Notifications = () => {
               selectedItems={selectedItems}
               onSelectionChange={setSelectedItems}
               sortValue={sortValue}
+              totalItemsCount={count}
               renderItem={item => (
                 <ResourceItem
                   id={item.id}

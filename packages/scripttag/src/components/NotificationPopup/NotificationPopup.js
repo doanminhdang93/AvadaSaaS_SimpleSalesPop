@@ -56,7 +56,7 @@ const NotificationPopup = ({
   );
 };
 
-NotificationPopup.PropTypes = {
+NotificationPopup.propTypes = {
   firstName: PropTypes.string,
   city: PropTypes.string,
   country: PropTypes.string,
